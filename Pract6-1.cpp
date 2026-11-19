@@ -1,37 +1,33 @@
 #include <iostream>
 #include <vector>
-#include <algorithm>
 using namespace std;
 int main(){
-    //Запрос количества элемнтов массива
-    int n;
-    cout << "Введите число элементов: ";
-    cin >> n;
-    //Создание пустых векторов
-    vector<int>m;
-    vector<int>d;
-    //Заполнение исходного вектора
-    for(int i=0; i<n; ++i){
-        int a;
-        cout << "Введите элемент: ";
-        cin >> a;
-        m.push_back(a);
-    }
-    //Нахождение дубликатов
-    for(int i=0; i<m.size(); ++i){
-        bool Dup=false;
-        for(int j=0; j<m.size(); ++j){
-            if(i!=j && m[i]==m[j]){Dup=true; break;}
+    //Создание матрицы
+    vector<vector<int>>mat={
+        {1, 2, 3},
+        {4, 5, 6},
+        {7, 8, 9}
+    };
+    int rows=mat.size();
+    int cols=mat[0].size();
+    //Транспонирование
+    vector<vector<int>>tr(cols, vector<int>(rows));
+    for(int i=0; i<rows; ++i){
+        for(int j=0; j<cols; ++j){
+            tr[j][i]=mat[i][j];
         }
-        //Если дубликат не был добавлен, то добавить
-        if(Dup && find(d.begin(), d.end(), m[i])==d.end()){d.push_back(m[i]);}
     }
-    //Вывод результата
-    if(d.size()>0){
-        cout << "Дубликаты: ";
-        for(int i=0; i<d.size(); ++i){cout << d[i] << " ";}
+    //Вывод исходной матрицы
+    cout << "Исходная матрица:" << "\n";
+    for(const auto& row:mat){
+        for(int x:row) cout << x << " ";
         cout << "\n";
     }
-    else{cout << "Дубликатов нет" << "\n";}
+    //Вывод транспонированное матрицы
+    cout << "Транспонированная матрица:" << "\n";
+    for(const auto& row:tr){
+        for(int x:row) cout << x << " ";
+        cout << "\n";
+    }
     return 0;
 }
