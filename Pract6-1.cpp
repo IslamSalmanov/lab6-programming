@@ -1,56 +1,62 @@
 #include <iostream>
 #include <vector>
-#include <tuple>
 #include <algorithm>
-#include <numeric>
-#include <iomanip>
+#include <set>
+#include <iterator>
 using namespace std;
 int main(){
-    //Создает пустой массив
-    vector<tuple<string, int, double>>st;
-    //Запрашивает число студентов
-    int k;
-    cout << "Введите число студентов: ";
-    cin >> k;
-    cin.ignore();
-    //Заполнение массива данными о студентах
-    for(int i=0; i<k; ++i){
-        cout << "Студент №" << i+1 << "\n";
-        string n;
-        cout << "Введите имя: ";
-        getline(cin, n);
+    //Запрос количества элементов в списке
+    int n;
+    cout << "Введите число элементов: ";
+    cin >> n;
+    //Создание пустых списков
+    vector<int>l1;
+    vector<int>l2;
+    //Заполнение первого списка
+    cout << "Заполнение первого списка" << "\n";
+    for(int i=0; i<n; ++i){
+        cout << "Элемент " << i+1 <<"\n";
         int a;
-        cout << "Введите возраст: ";
+        cout << "Введите элемент: ";
         cin >> a;
-        double b;
-        cout << "Введите балл: ";
-        cin >> b;
-        cin.ignore();
-        st.push_back({n, a, b});
+        l1.push_back(a);
     }
-    //Нахождение самого старшего
-    auto ol=*max_element(st.begin(), st.end(), [](const auto& a, const auto& b){
-        return get<1>(a)<get<1>(b);
-    });
-    cout << "Самый старший: " << get<0>(ol) << ", " << get<1>(ol)<<" лет" << "\n";
-    //Нахождение самого высокого балла
-    auto bb=*max_element(st.begin(), st.end(), [](const auto& a, const auto& b){
-        return get<2>(a)<get<2>(b);
-    });
-    cout << "Лучший студент: " << get<0>(bb) << ", балл: " << get<2>(bb)<< "\n";
-    //Нахождение среднего возраста
-    auto sv=accumulate(st.begin(), st.end(), 0, [](int sum, const auto& s){
-        return sum+get<1>(s);
-    });
-    cout<<fixed<<setprecision(1);
-    cout << "Средний возраст: " << static_cast<double>(sv)/st.size() << "\n";
-    //Сортировка по баллу
-    sort(st.begin(), st.end(), [](const auto& a, const auto& b){
-        return get<2>(a)>get<2>(b);
-    });
-    cout << "Сортировка по баллу: " << "\n";
-    for(const auto& [n,a,b]:st){
-        cout<<n<<": "<<b<<"\n";
+    //Заполнение второго списка
+    cout << "Заполнение второго списка" << "\n";
+    for(int i=0; i<n; ++i){
+        cout << "Элемент " << i+1 <<"\n";
+        int a;
+        cout << "Введите элемент: ";
+        cin >> a;
+        l2.push_back(a);
     }
+    //Множества
+    set<int>m1(l1.begin(), l1.end());
+    set<int>m2(l2.begin(), l2.end());
+    //Нахождение объединения
+    set<int>ob;
+    set_union(m1.begin(), m1.end(), m2.begin(), m2.end(), inserter(ob, ob.begin()));
+    //Нахождение пересечения
+    set<int>per;
+    set_intersection(m1.begin(), m1.end(), m2.begin(), m2.end(), inserter(per, per.begin()));
+    //Нахождение разности
+    set<int>raz;
+    set_difference(m1.begin(), m1.end(), m2.begin(), m2.end(), inserter(raz, raz.begin()));
+    //Вывод результата
+    cout << "Первый список: ";
+    for (int x : m1) cout << x << " ";
+    cout << "\n";
+    cout << "Второй список: ";
+    for (int x : m2) cout << x << " ";
+    cout << "\n";
+    cout << "Объединение: ";
+    for (int x : ob) cout << x << " ";
+    cout << "\n";
+    cout << "Пересечение: ";
+    for (int x : per) cout << x << " ";
+    cout << "\n";
+    cout << "Разность: ";
+    for (int x : raz) cout << x << " ";
+    cout << "\n";
     return 0;
 }
